@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "96449640194",
+    "project_id": "vehicle-tracker-177b2",
+    "storage_bucket": "vehicle-tracker-177b2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:96449640194:android:a7b24c578296b3e818f41b",
+        "android_client_info": {
+          "package_name": "com.jkkniu.vehicletracker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "96449640194-6g90rh90ppob8hdnrsfielo3uh4jvrlp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.jkkniu.vehicletracker",
+            "certificate_hash": "2073f434bb3555cfd61a370e4dff682ed6fa1560"
+          }
+        },
+        {
+          "client_id": "96449640194-8738p11732tbragk68efkoj1c79tgq3j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDIkzlNYPx1PJHHH5USRzRvktxV2zqDgW0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "96449640194-8738p11732tbragk68efkoj1c79tgq3j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
