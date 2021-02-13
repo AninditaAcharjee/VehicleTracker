@@ -15,6 +15,7 @@ public class HomePage extends AppCompatActivity {
         setContentView(R.layout.activity_home_page);
 
         ImageButton imageButton = findViewById(R.id.driver);
+        ImageButton imageButton2 = findViewById(R.id.user);
 
         //final Context context = this;
 
@@ -24,6 +25,12 @@ public class HomePage extends AppCompatActivity {
             public void onClick(View view) {
                 // Intent intent =;
                 startActivity(new Intent(HomePage.this, Registration.class));
+            }
+        });
+        imageButton2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(HomePage.this, MapUser.class));
             }
         });
     }

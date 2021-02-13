@@ -15,9 +15,5 @@ public class Combine extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_combine);
     }
-    public void logout(View view){
-        FirebaseAuth.getInstance().signOut(); //logout
-        startActivity(new Intent(getApplicationContext(), Login.class));
-        finish();
-    }
+
 }

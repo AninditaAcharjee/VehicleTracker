@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Vehicle Tracker</string>
+    <string name="title_activity_map_driver">Map</string>
+    <string name="title_activity_map_user">Map</string>
 </resources>

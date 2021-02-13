@@ -43,7 +43,7 @@ public class Registration extends AppCompatActivity {
 
 
         if (auth.getCurrentUser()!= null){
-            startActivity(new Intent(getApplicationContext(), Combine.class));
+            startActivity(new Intent(getApplicationContext(), MapDriver.class));
             finish();
         }
 

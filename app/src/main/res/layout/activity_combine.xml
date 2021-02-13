@@ -10,11 +10,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Successfully Log in!!"/>
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Log out"
-        android:onClick="logout"
-        />
+
 
 </LinearLayout>

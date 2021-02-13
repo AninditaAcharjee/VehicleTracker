@@ -44,16 +44,15 @@
         android:layout_weight="1"
         android:layout_gravity="center">
         <ImageButton
-            android:id="@+id/imageButton2"
+            android:id="@+id/user"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/imageButton2"
             app:srcCompat="@drawable/user" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/imageButton2"
+            android:layout_below="@id/user"
             android:layout_marginTop="9dp"
             android:layout_centerHorizontal="true"
             android:text="As an user"
