@@ -2,7 +2,6 @@ package com.jkkniu.vehicletracker;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
 import android.content.Intent;
@@ -11,6 +10,7 @@ import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.ResolvableApiException;
@@ -28,10 +28,14 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionDeniedResponse;
@@ -39,11 +43,14 @@ import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
 
-public class MapDriver extends AppCompatActivity implements OnMapReadyCallback {
+public class MapDriver extends AppCompatActivity implements OnMapReadyCallback, DataRefs {
 
     private GoogleMap mMap;
+
     SupportMapFragment supportMapFragment;
-    private LocationRequest locationRequest=new LocationRequest()
+    FusedLocationProviderClient fusedLocationProviderClient;
+    Marker marker = null;
+    private LocationRequest locationRequest = new LocationRequest()
             .setInterval(2000)
             .setFastestInterval(1000)
             .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
@@ -58,7 +65,7 @@ public class MapDriver extends AppCompatActivity implements OnMapReadyCallback {
         supportMapFragment.getMapAsync(this);
 
         // get GPS permission
-        LocationSettingsRequest.Builder builder= new LocationSettingsRequest.Builder()
+        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
                 .addLocationRequest(locationRequest.create());
         builder.setAlwaysShow(true);
         Task<LocationSettingsResponse> result = LocationServices.getSettingsClient(getApplicationContext())
@@ -68,9 +75,9 @@ public class MapDriver extends AppCompatActivity implements OnMapReadyCallback {
             @Override
             public void onComplete(@NonNull Task<LocationSettingsResponse> task) {
                 try {
-                    LocationSettingsResponse response= task.getResult(ApiException.class);
+                    LocationSettingsResponse response = task.getResult(ApiException.class);
                 } catch (ApiException e) {
-                    switch (e.getStatusCode()){
+                    switch (e.getStatusCode()) {
                         case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
 
                             try {
@@ -85,7 +92,7 @@ public class MapDriver extends AppCompatActivity implements OnMapReadyCallback {
             }
         });
 
-
+        //for runtime permission
         Dexter.withContext(getApplicationContext())
                 .withPermission(Manifest.permission.ACCESS_FINE_LOCATION)
                 .withListener(new PermissionListener() {
@@ -130,37 +137,92 @@ public class MapDriver extends AppCompatActivity implements OnMapReadyCallback {
     }
 
     private void addMarkerToMap(LatLng latLng) {
-        MarkerOptions markerOptions = new MarkerOptions().title("ami ekhane").position(latLng);
-        mMap.addMarker(markerOptions);
+
+        if (marker != null) {
+            marker.remove();
+        }
+        MarkerOptions markerOptions = new MarkerOptions();
+        markerOptions.title("ami ekhane").position(latLng);
+        marker = mMap.addMarker(markerOptions);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17.5f));
     }
 
-    private void getCurrentLocation() {
-        FusedLocationProviderClient fusedLocationProviderClient =new FusedLocationProviderClient(MapDriver.this);
-        fusedLocationProviderClient.requestLocationUpdates(locationRequest,
-                new LocationCallback(){
+
+    private LocationCallback locationCallback =new LocationCallback(){
+
+        @Override
+        public void onLocationAvailability(LocationAvailability locationAvailability) {
+            super.onLocationAvailability(locationAvailability);
+        }
+
+        @Override
+        public void onLocationResult(LocationResult locationResult) {
+            super.onLocationResult(locationResult);
+            if (locationResult != null) {
+                Location location = locationResult.getLastLocation();
+                Log.e("LOCATION paisi>>", location.toString());
+
+
+                LocationSaver locationHelper = new LocationSaver(
+                        location.getLongitude(),
+                        location.getLatitude()
+                );
+
+
+                FirebaseDatabase.getInstance()
+                        .getReference()
+                        .child(LOCATION_REF)
+                        .setValue(locationHelper)
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Log.d("Firebase", "database e data paisi");
+                                Toast.makeText(MapDriver.this,
+                                        "database e data paisi",
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
                     @Override
-                    public void onLocationAvailability(LocationAvailability locationAvailability) {
-                        super.onLocationAvailability(locationAvailability);
+                    public void onFailure(@NonNull Exception e) {
+                        e.printStackTrace();
+                        Toast.makeText(MapDriver.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
+                });
 
-                    @Override
-                    public void onLocationResult(LocationResult locationResult) {
-                        //super.onLocationResult(locationResult);
-                        if (locationResult != null) {
-                            Location location = locationResult.getLastLocation();
-                            Log.e("LOCATION paisi>>", location.toString());
 
-                            LatLng l = new LatLng(location.getLatitude(), location.getLongitude());
+                LatLng l = new LatLng(location.getLatitude(), location.getLongitude());
+                addMarkerToMap(l);
+            }
+        }
+    };
 
-                            addMarkerToMap(l);
-                        }
-                    }
-                },
-                null
-        );
+
+    public void getCurrentLocation() {
+
+        fusedLocationProviderClient = new FusedLocationProviderClient(MapDriver.this);
+        fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, null);
     }
-    public void logout(View view){
+
+
+    public void stopLocationUpdates() {
+        if (fusedLocationProviderClient != null) {
+            try {
+                final Task<Void> voidTask =  LocationServices.getFusedLocationProviderClient(this).removeLocationUpdates(locationCallback);;
+                if (voidTask.isSuccessful()) {
+                    Log.d("stopLocationUpdates","StopLocation updates successful! ");
+                } else {
+                    Log.d("stopLocationUpdates","StopLocation updates unsuccessful! " + voidTask.toString());
+                }
+            }
+            catch (SecurityException exp) {
+                Log.d("stopLocationUpdates", " Security exception while removeLocationUpdates");
+            }
+        }
+    }
+
+    public void logout(View view) {
+
+        stopLocationUpdates();
         FirebaseAuth.getInstance().signOut(); //logout
         startActivity(new Intent(getApplicationContext(), Login.class));
         finish();

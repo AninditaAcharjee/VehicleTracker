@@ -30,13 +30,18 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
 
         <activity
             android:name=".MapUser"
             android:label="@string/title_activity_map_user"></activity>
         <activity
             android:name=".MapDriver"
-            android:label="@string/title_activity_map_driver" />
+            android:label="@string/title_activity_map_driver">
+
+        </activity>
         <activity android:name=".HomePage" />
         <activity android:name=".Combine" />
         <activity android:name=".Login" />

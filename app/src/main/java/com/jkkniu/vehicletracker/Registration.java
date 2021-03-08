@@ -75,7 +75,7 @@ public class Registration extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()){
                             Toast.makeText(Registration.this, "User created", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(getApplicationContext(), Combine.class));
+                            startActivity(new Intent(getApplicationContext(), MapDriver.class));
                         }
                         else{
                             Toast.makeText(Registration.this, "Error !"+ task.getException().getMessage(), Toast.LENGTH_SHORT).show();

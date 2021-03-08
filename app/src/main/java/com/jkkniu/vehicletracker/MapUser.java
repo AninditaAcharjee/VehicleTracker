@@ -1,20 +1,31 @@
 package com.jkkniu.vehicletracker;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentActivity;
 
+import android.graphics.Color;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
-public class MapUser extends AppCompatActivity implements OnMapReadyCallback {
+public class MapUser extends AppCompatActivity implements OnMapReadyCallback, DataRefs {
 
     private GoogleMap mMap;
+    private MarkerOptions markerOptions;
+    Marker marker = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,8 +52,33 @@ public class MapUser extends AppCompatActivity implements OnMapReadyCallback {
         mMap = googleMap;
 
         // Add a marker in Bangladesh and move the camera
-        LatLng latLng = new LatLng(23.0, 90.0);
-        mMap.addMarker(new MarkerOptions().position(latLng).title("Marker in Bangladesh"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+
+
+        FirebaseDatabase.getInstance().getReference().child(LOCATION_REF).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                LocationSaver saver = snapshot.getValue(LocationSaver.class);
+                if (marker != null) {
+                    marker.remove();
+                }
+                if (saver != null) {
+                    LatLng latLng = new LatLng(saver.getLatitude(), saver.getLongitude());
+
+                    markerOptions = new MarkerOptions().position(latLng).title("Gari Ekhane!!!");
+                    marker = mMap.addMarker(markerOptions);
+                    mMap.addPolyline(new PolylineOptions().add(latLng).color(Color.BLUE).width(7));
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17.5f));
+                } else {
+                    Toast.makeText(MapUser.this, "Location pai nai", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
     }
 }
