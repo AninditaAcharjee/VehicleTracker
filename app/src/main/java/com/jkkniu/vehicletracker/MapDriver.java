@@ -131,9 +131,9 @@ public class MapDriver extends AppCompatActivity implements OnMapReadyCallback, 
         getCurrentLocation();
         Log.d("OnMapReady", "Location paisi");
 
-        LatLng latLng = new LatLng(23.0, 90.0);
+        //LatLng latLng = new LatLng(23.0, 90.0);
 
-        addMarkerToMap(latLng);
+        //addMarkerToMap(latLng);
     }
 
     private void addMarkerToMap(LatLng latLng) {
@@ -144,7 +144,7 @@ public class MapDriver extends AppCompatActivity implements OnMapReadyCallback, 
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.title("ami ekhane").position(latLng);
         marker = mMap.addMarker(markerOptions);
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17.5f));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 18f));
     }
 
 

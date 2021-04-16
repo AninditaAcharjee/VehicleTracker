@@ -26,7 +26,8 @@ public class MapUser extends AppCompatActivity implements OnMapReadyCallback, Da
     private GoogleMap mMap;
     private MarkerOptions markerOptions;
     Marker marker = null;
-
+    LatLng latLng1=null;
+    boolean check=false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,11 +64,15 @@ public class MapUser extends AppCompatActivity implements OnMapReadyCallback, Da
                 }
                 if (saver != null) {
                     LatLng latLng = new LatLng(saver.getLatitude(), saver.getLongitude());
-
+                    if(check==false)
+                    {
+                        check=true;
+                        latLng1=latLng;
+                    }
                     markerOptions = new MarkerOptions().position(latLng).title("Gari Ekhane!!!");
                     marker = mMap.addMarker(markerOptions);
-                    mMap.addPolyline(new PolylineOptions().add(latLng).color(Color.BLUE).width(7));
-                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17.5f));
+                    mMap.addPolyline(new PolylineOptions().add(latLng1,latLng).color(Color.BLUE).width(7));
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 18f));
                 } else {
                     Toast.makeText(MapUser.this, "Location pai nai", Toast.LENGTH_SHORT).show();
                 }
