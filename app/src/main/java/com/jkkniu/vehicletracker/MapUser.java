@@ -86,6 +86,5 @@ public class MapUser extends AppCompatActivity implements OnMapReadyCallback, Da
             }
         });
 
-
     }
 }

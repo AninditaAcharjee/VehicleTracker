@@ -4,6 +4,7 @@ public class LocationSaver {
     private double longitude;
     private double latitude;
 
+
     public LocationSaver() {
 
     }

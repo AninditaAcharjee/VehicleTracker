@@ -58,5 +58,4 @@
         </activity>
         <service android:name=".ForegroundNotificationService"/>
     </application>
-
 </manifest>
