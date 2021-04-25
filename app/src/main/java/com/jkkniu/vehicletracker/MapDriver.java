@@ -64,7 +64,7 @@ public class MapDriver extends AppCompatActivity implements OnMapReadyCallback, 
     private GoogleMap mMap;
 
     SupportMapFragment supportMapFragment;
-   // FusedLocationProviderClient fusedLocationProviderClient;
+    // FusedLocationProviderClient fusedLocationProviderClient;
     Marker marker = null;
 
 /*    private LocationRequest locationRequest = new LocationRequest()
@@ -88,8 +88,6 @@ public class MapDriver extends AppCompatActivity implements OnMapReadyCallback, 
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
                 .addLocationRequest(locationRequest.create());
         builder.setAlwaysShow(true);
-
-
         LocationServices.getSettingsClient(getApplicationContext())
                 .checkLocationSettings(builder.build())
                 .addOnCompleteListener(new OnCompleteListener<LocationSettingsResponse>() {
@@ -105,7 +103,6 @@ public class MapDriver extends AppCompatActivity implements OnMapReadyCallback, 
                                         resolvableApiException.startResolutionForResult(MapDriver.this, 1001);
                                     } catch (IntentSender.SendIntentException ex) {
                                         ex.printStackTrace();
-
                                     }
                                     break;
                             }
@@ -197,7 +194,6 @@ public class MapDriver extends AppCompatActivity implements OnMapReadyCallback, 
     }
 
  /*   private void addMarkerToMap(LatLng latLng) {
-
         if (marker != null) {
             marker.remove();
         }
@@ -221,42 +217,30 @@ public class MapDriver extends AppCompatActivity implements OnMapReadyCallback, 
 
 
 /*    private LocationCallback locationCallback = new LocationCallback() {
-
         @Override
         public void onLocationAvailability(LocationAvailability locationAvailability) {
             super.onLocationAvailability(locationAvailability);
         }
-
         @Override
         public void onLocationResult(LocationResult locationResult) {
             super.onLocationResult(locationResult);
             if (locationResult != null) {
                 Location location = locationResult.getLastLocation();
                 Log.e("LOCATION paisi>>", location.toString());
-
-
                 //start notification service
                 Intent serviceIntent = new Intent(MapDriver.this, ForegroundNotificationService.class);
                 serviceIntent.putExtra("input", location.toString());
                 ContextCompat.startForegroundService(MapDriver.this, serviceIntent);
                 //
-
-
                 LatLng l = new LatLng(location.getLatitude(), location.getLongitude());
                 addMarkerToMap(l);
             }
-
-
         }
     };
-
-
     public void getCurrentLocation() {
-
         fusedLocationProviderClient = new FusedLocationProviderClient(MapDriver.this);
         fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, null);
     }
-
     public void getLocation(Context context) {
         final long time = 4900;
         fusedLocationProviderClient = new FusedLocationProviderClient(context);
@@ -274,13 +258,10 @@ public class MapDriver extends AppCompatActivity implements OnMapReadyCallback, 
                                     Log.e("LOCATION Updtx", location.toString());
                                     LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
                                     saveLocationToServer(location);
-
                                 } else {
                                     Log.e("LOCATION Updtx", "no updates");
                                 }
-
                             }
-
                             @Override
                             public void onLocationAvailability(LocationAvailability locationAvailability) {
                                 super.onLocationAvailability(locationAvailability);
@@ -288,8 +269,6 @@ public class MapDriver extends AppCompatActivity implements OnMapReadyCallback, 
                         }, Looper.getMainLooper()
                 );
     }
-
-
     public void stopLocationUpdates() {
         if (fusedLocationProviderClient != null) {
             try {
@@ -308,7 +287,6 @@ public class MapDriver extends AppCompatActivity implements OnMapReadyCallback, 
     public void logout(View view) {
 /*        stopLocationUpdates();
         FirebaseAuth.getInstance().signOut(); //logout
-
         //stop foreground notification service
         Intent serviceIntent = new Intent(MapDriver.this, ForegroundNotificationService.class);
         stopService(serviceIntent);
