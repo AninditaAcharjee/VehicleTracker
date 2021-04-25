@@ -21,6 +21,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Calendar;
+
 public class MapUser extends AppCompatActivity implements OnMapReadyCallback, DataRefs {
 
     private GoogleMap mMap;
@@ -55,23 +57,23 @@ public class MapUser extends AppCompatActivity implements OnMapReadyCallback, Da
         // Add a marker in Bangladesh and move the camera
 
 
-        FirebaseDatabase.getInstance().getReference().child(LOCATION_REF).addValueEventListener(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference().child(LOCATION_REF).child("bus_1").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 LocationSaver saver = snapshot.getValue(LocationSaver.class);
                 if (marker != null) {
                     marker.remove();
                 }
-                if (saver != null) {
+                if (saver != null && mMap!= null) {
                     LatLng latLng = new LatLng(saver.getLatitude(), saver.getLongitude());
-                    if(check==false)
+                    /*if(check==false)
                     {
                         check=true;
                         latLng1=latLng;
-                    }
-                    markerOptions = new MarkerOptions().position(latLng).title("Gari Ekhane!!!");
+                    }*/
+                    markerOptions = new MarkerOptions().position(latLng).title("Last updated at " + Calendar.getInstance().get(Calendar.HOUR_OF_DAY) + ":" + Calendar.getInstance().get(Calendar.MINUTE));
                     marker = mMap.addMarker(markerOptions);
-                    mMap.addPolyline(new PolylineOptions().add(latLng1,latLng).color(Color.BLUE).width(7));
+                    //mMap.addPolyline(new PolylineOptions().add(latLng1,latLng).color(Color.BLUE).width(7));
                     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 18f));
                 } else {
                     Toast.makeText(MapUser.this, "Location pai nai", Toast.LENGTH_SHORT).show();

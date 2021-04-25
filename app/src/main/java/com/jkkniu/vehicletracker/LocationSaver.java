@@ -17,15 +17,17 @@ public class LocationSaver {
         return longitude;
     }
 
-    public void setLongitude(double longitude) {
+    public LocationSaver setLongitude(double longitude) {
         this.longitude = longitude;
+        return this;
     }
 
     public double getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(double latitude) {
+    public LocationSaver setLatitude(double latitude) {
         this.latitude = latitude;
+        return this;
     }
 }
