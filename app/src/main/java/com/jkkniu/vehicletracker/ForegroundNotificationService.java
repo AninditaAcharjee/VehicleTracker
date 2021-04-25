@@ -122,7 +122,6 @@ public class ForegroundNotificationService extends Service {
 
                 }
 
-
                 @Override
                 public void onLocationAvailability(LocationAvailability locationAvailability) {
                     super.onLocationAvailability(locationAvailability);
@@ -130,7 +129,6 @@ public class ForegroundNotificationService extends Service {
             };
         }
 
-        
         fusedLocationProviderClient
                 .requestLocationUpdates(
                         new LocationRequest()
