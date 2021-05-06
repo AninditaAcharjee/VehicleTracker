@@ -71,7 +71,7 @@ public class MapUser extends AppCompatActivity implements OnMapReadyCallback, Da
                         check=true;
                         latLng1=latLng;
                     }*/
-                    markerOptions = new MarkerOptions().position(latLng).title("Last updated at " + Calendar.getInstance().get(Calendar.HOUR_OF_DAY) + ":" + Calendar.getInstance().get(Calendar.MINUTE));
+                    markerOptions = new MarkerOptions().position(latLng).title(saver.getTimestamp().toString());
                     marker = mMap.addMarker(markerOptions);
                     //mMap.addPolyline(new PolylineOptions().add(latLng1,latLng).color(Color.BLUE).width(7));
                     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 18f));

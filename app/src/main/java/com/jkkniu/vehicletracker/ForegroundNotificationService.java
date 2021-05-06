@@ -21,10 +21,10 @@ import com.google.android.gms.location.LocationAvailability;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 
 import java.util.Calendar;
 
@@ -114,7 +114,8 @@ public class ForegroundNotificationService extends Service {
                         Log.e("LOCATION Update", location.toString());
                         //  LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
 
-                        saveLocationToServer(busName, location);
+                        String time=Calendar.getInstance().get(Calendar.HOUR_OF_DAY) + ":" + Calendar.getInstance().get(Calendar.MINUTE);
+                        saveLocationToServer(busName, location, time);
 
                     } else {
                         Log.e("LOCATION Update", "no updates");
@@ -140,7 +141,7 @@ public class ForegroundNotificationService extends Service {
     }
 
 
-    public void saveLocationToServer(String busName, Location location) {
+    public void saveLocationToServer(String busName, Location location, String time) {
         FirebaseDatabase.getInstance()
                 .getReference()
                 .child(LOCATION_REF)
@@ -149,6 +150,8 @@ public class ForegroundNotificationService extends Service {
                         new LocationSaver()
                                 .setLatitude(location.getLatitude())
                                 .setLongitude(location.getLongitude())
+                                .setTimestamp(time)
+
                 )
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -188,6 +191,8 @@ public class ForegroundNotificationService extends Service {
                 .setContentIntent(pendingIntent)
                 .setSmallIcon(R.drawable.driver_bus)
                 .build();
+
+
     }
 
 }
