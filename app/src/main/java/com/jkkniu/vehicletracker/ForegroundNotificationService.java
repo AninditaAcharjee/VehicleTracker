@@ -186,6 +186,7 @@ public class ForegroundNotificationService extends Service {
         pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
         return new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setContentTitle("Vehicle Tracker")
+
                 .setContentText("Last " + update + " at " + Calendar.getInstance().get(Calendar.HOUR_OF_DAY) + ":" + Calendar.getInstance().get(Calendar.MINUTE))
                 .setAutoCancel(true)
                 .setContentIntent(pendingIntent)
