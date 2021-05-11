@@ -26,7 +26,7 @@ public class Login extends AppCompatActivity {
     EditText email, password;
     Button loginBtn;
     TextView createBtn, forgetText;
-    FirebaseAuth auth;
+    public FirebaseAuth auth;
     ProgressBar progressBar;
 
 

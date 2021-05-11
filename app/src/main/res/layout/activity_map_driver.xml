@@ -17,6 +17,7 @@
         android:layout_alignBottom="@id/map"
         android:layout_centerHorizontal="true"
         android:text="Logout"
-        android:onClick="logout"/>
+        android:onClick="logout"
+        android:id="@+id/logout"/>
 
 </RelativeLayout>

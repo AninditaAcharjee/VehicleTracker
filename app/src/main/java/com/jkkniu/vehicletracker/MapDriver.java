@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.os.Looper;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.gms.common.api.ApiException;
@@ -62,6 +63,7 @@ import java.util.Random;
 public class MapDriver extends AppCompatActivity implements OnMapReadyCallback, DataRefs {
 
     private GoogleMap mMap;
+//    Button logOutButton=findViewById(R.id.logout);
 
     SupportMapFragment supportMapFragment;
     // FusedLocationProviderClient fusedLocationProviderClient;
@@ -167,7 +169,14 @@ public class MapDriver extends AppCompatActivity implements OnMapReadyCallback, 
                     }
                 });
 
-
+        /*logOutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseAuth.getInstance().signOut();
+                startActivity(new Intent(getApplicationContext(), Login.class));
+                finish();
+            }
+        });*/
     }
 
 
@@ -300,6 +309,7 @@ public class MapDriver extends AppCompatActivity implements OnMapReadyCallback, 
             startService(startIntent);
         }
 
+        FirebaseAuth.getInstance().signOut();
         startActivity(new Intent(getApplicationContext(), Login.class));
         finish();
     }
