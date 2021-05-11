@@ -193,7 +193,6 @@ public class ForegroundNotificationService extends Service {
                 .setSmallIcon(R.drawable.driver_bus)
                 .build();
 
-
     }
 
 }
